@@ -1,0 +1,67 @@
+
+main{
+    width: 80%;
+    font-family:'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: auto;
+    margin-top: 0px;
+    padding:0px;
+    font-weight:400;border-radius:10px;
+
+}
+input{
+    margin-top: 10px;
+    outline: none;
+    padding:10px;
+    width:60%;
+    font-size:20px;
+    box-sizing: border-box;border-radius:6px;
+}
+select{
+    outline: none;
+    padding:10px;
+    width:60%;
+    margin-bottom: 0px;
+    box-sizing: border-box;
+    border-radius:6px;
+
+}
+select option{
+    font-size: 23px;
+    font-weight: 300;
+}
+.other,.voucher, .on-delivery, .pickup, .personal{
+    height: 150px;
+    padding-left:30px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.35);
+    padding-top:5px;
+    padding-bottom: 150px;
+    margin-top:45px;
+}
+#rad, #irad{
+    margin-left: 0px;
+    padding-left:0px;
+    width: 15px;
+    display:inline;
+    
+}
+h3{
+    
+    font-size: 1.5em;
+    font-weight: 400;
+}
+h2{
+    font-weight:400;
+}
+h4{
+    margin:10px 0;
+    font-size: 20px;
+    
+}
+.subbtn{
+    height:35px;
+    width:150px;
+    border-radius:8px;
+    margin-top: 50px;
+    font-size: 20px;
+}
