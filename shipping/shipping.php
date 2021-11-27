@@ -1,16 +1,25 @@
 <?php 
-//start the session
-session_start();
+    //start the session
+    session_start();
+    //store the user data in session or cookie variables
+    if(isset($_GET['ship'])){
 
-if(isset($_GET['ship'])){
-    $_SESSION['shipping']= $_GET["personal"];
-    if($_GET["personal"]=="self"){
-        $_SESSION['place']=$_GET['address'];
-    } else{
-        $_SESSION['place']=$_GET['location'];
+        $_SESSION['firstname']=$_GET['firstname'];
+        $_SESSION['lastname']=$_GET['lastname'];
+        $_SESSION['email']=$_GET['email'];
+        $_SESSION['address']=$_GET['address'];
+        $_SESSION['city']=$_GET['city'];
+        $_SESSION['location']=$_GET['location'];
+
+        
+        //go to the payment page
+        header("location: ./payment.php");
+
     }
-    header("location: ./payment.php");
-}
+    
+
+   
+   
 
 
 
@@ -35,39 +44,61 @@ if(isset($_GET['ship'])){
     <title>shipping</title>
 </head>
 <body>
+ 
     <main>
-        <h2>Checkout</h2>
-
-        <section class="delivery">
+        <div class="shipping">
             <form action="shipping.php" method="get">
-                <div class="personal">
-                    <input type="radio" name="personal" id="rad" value="self">
-                    <h3>Deliver to me</h3>
-                    <input type="text" name="address" id="address" placeholder="Enter your address">
-                </div>
-                <div class="pickup">
-                    <input type="radio" name="personal" id="rad" value="place">
-                    <h3>Pickup from store</h3>
-                    <h4>select your region</h4>
-                    
-                    <select name="location" id="location">
-                        <option value="Abia">Abia</option>
-                        <option value="Akwa-ibom">Akwa-ibom</option>
-                        <option value="Ibadan">Ibadan</option>
-                        <option value="Abuja">Abuja</option>
-                        <option value="Lagos">Lagos</option>
-                        <option value="Port-Harcourt">Port-Harcourt</option>
-                        <option value="Kano">Kano</option>
-                    </select>
+                <div class="row">
+                    <div class="col-50">
+                        <h3>Billing Address</h3>
+                        <label for="fname"><i class="fa fa-user"></i> Firstname</label>
+                        <input type="text" id="fname" name="firstname" placeholder="Firstname">
+                        <label for="fname"><i class="fa fa-user"></i> Lastname</label>
+                        <input type="text" id="lname" name="lastname" placeholder="Lastname">
+                        <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                        <input type="text" id="email" name="email" placeholder="Enter your email">
+                        <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                        <input type="text" id="adr" name="address" placeholder="Enter your address">
+                        <label for="city"><i class="fa fa-institution"></i> City</label>
+                        <input type="text" id="city" name="city" placeholder="Town">
 
+                        <div class="row">
+                            <div class="col-50">
+                                <label for="location">Select your region</label>
+                                                            
+                                <select name="location" id="location">
+                                    <option value="Abia">Abia</option>
+                                    <option value="Akwa-ibom">Akwa-ibom</option>
+                                    <option value="Ibadan">Ibadan</option>
+                                    <option value="Abuja">Abuja</option>
+                                    <option value="Lagos">Lagos</option>
+                                    <option value="Port-Harcourt">Port-Harcourt</option>
+                                    <option value="Kano">Kano</option>
+                                </select>
+                            </div>
+                            <div class="col-50">
+                                <label for="zip">Zip</label>
+                                <input type="text" id="zip" name="zip" placeholder="optional">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div><a href="./payment.php" target="_blank"><button type="submit" name="ship" class="subbtn">Proceed</button></a></div>
+                <label>
+                    <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+                </label>
+                <button type="submit" name="ship" class="subbtn">To payment</button>
             </form>
+            
+        </div>
 
-        </section>
         <section class="review">
+            <!-- review your order here-->
 
+            
+    
         </section>
     </main>
+
+    
 </body>
 </html>

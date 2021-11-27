@@ -41,7 +41,7 @@ if (isset($_POST["checkout-btn"])) {
 			</div>
 
             <div class="cart-error-message" id="cart-error-message">Cart
-                must not be emty to checkout</div>
+                must not be empty to checkout</div>
             <div id="shopping-cart" tabindex="1">
                 <div id="tbl-cart">
                     <div id="txt-heading">
