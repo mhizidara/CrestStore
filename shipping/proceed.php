@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+
  
 ?>
  
@@ -22,10 +24,10 @@ session_start();
 </head>
 <body>
     <h1 class="my-5">Dear, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. .</h1>
-    <?php if($_SESSION['paymethod']== "on-delivery"){
+    <?php if($_SESSION['method']== "on-delivery"){
         echo "<h2>Your Order is being processed</h2><br> <h3> An invoice will be sent to you shortly </h3>";
-    } elseif($_SESSION['paymethod']== "others"){
-        echo "<br> <h3> You will be required to input your transaction details on the next page </h3>";
+    } elseif($_SESSION['method']== "cards"){
+        echo "<br> <h3> Please wait while we confirm your payment details. <br>An invoice will be sent to you shortly</h3>";
     } else{
         echo "<br> <h3> Your Gift-card is being validated. An invoice will be sent to you shortly </h3>";
     } ?>
