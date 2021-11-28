@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
  
 // Include config file
-require_once "../resources/config.php";
+require_once "resources/config.php";
  
 // Define variables and initialize with empty values
 $new_password = $confirm_password = "";
@@ -64,12 +64,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
     }
-    
     // Close connection
     $mysqli->close();
 }
@@ -83,9 +81,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Reset Password</title>
 
-        <link href="../resources/bootstrap4.5.2.min.css" rel="stylesheet" >
-        <link href="../resources/bootstrap.min.css" rel="stylesheet" >
-        <link href="../resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/bootstrap4.5.2.min.css" rel="stylesheet" >
+        <link href="resources/bootstrap.min.css" rel="stylesheet" >
+        <link href="resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/style.css" rel="stylesheet" />
+        <script src="resources/all.min.js" crossorigin="anonymous"></script>
 
         <?php require 'header.php'; ?>
 </head>
@@ -103,7 +103,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>">
                 <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
             </div>
-            <div class="form-group" style="margin-top:30px">
+            <div class="form-group" style="margin-top:30px; margin-bottom:30px;">
                 <input type="submit" class="btn btn-primary" value="Reset Password">
                 <a class="btn btn-link ml-2" href="home.php">Back to Home</a>
             </div>

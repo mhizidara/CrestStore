@@ -3,7 +3,7 @@
 session_start();
 
 // Include config file
-require_once "../resources/config.php";
+require_once "resources/config.php";
 
 // Define variables and initialize with empty values
 $password = $confirm_password = "";
@@ -58,12 +58,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 $setpassword_err = "Oops! Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
     }
-    
     // Close connection
     $mysqli->close();
 }
@@ -77,15 +75,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>New Password</title>
 
-        <link href="../resources/bootstrap4.5.2.min.css" rel="stylesheet" >
-        <link href="../resources/bootstrap.min.css" rel="stylesheet" >
-        <link href="../resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/bootstrap4.5.2.min.css" rel="stylesheet" >
+        <link href="resources/bootstrap.min.css" rel="stylesheet" >
+        <link href="resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/style.css" rel="stylesheet" />
+        <script src="resources/all.min.js" crossorigin="anonymous"></script>
 
         <?php require 'header.php'; ?>
     </head>
 
     <body>
-        <div class="container" style="width:400px">
+        <div class="container" style="width:400px; margin-top:20px;">
             <h2><p class="text-center">Set New Password</p></h2>
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 

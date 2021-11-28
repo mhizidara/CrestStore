@@ -9,7 +9,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 }
  
 // Include config file
-require_once "../resources/config.php";
+require_once "resources/config.php";
  
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     // Check if username is empty
     if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter username.";
+        $username_err = "Please enter your admin username.";
     } else{
         $username = trim($_POST["username"]);
     }
@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        $sql = "SELECT id, username, password FROM admin WHERE username = ?";
         
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
@@ -66,9 +66,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // if remember me check box is clicked, values will be stored in $_COOKIE array
                             if(!empty($_POST["remember"])) {
                                 //COOKIES for username
-                                setcookie ("username",$_POST["username"],time()+ 3600);
+                                setcookie ("adminusername",$_POST["username"],time()+ 3600);
                                 //COOKIES for password
-                                setcookie ("password",$_POST["password"],time()+ 3600);
+                                setcookie ("adminpassword",$_POST["password"],time()+ 3600);
                             }
                             
                             // Redirect user to welcome page
@@ -83,14 +83,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $login_err = "Invalid username or password.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                $login_err = "Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
     }
-    
     // Close connection
     $mysqli->close();
 }
@@ -104,8 +102,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     
-    <link href="../resources/bootstrap.min.css" rel="stylesheet">
-    <link href="../resources/templatestyles.css" rel="stylesheet">
+    <link href="resources/bootstrap4.5.2.min.css" rel="stylesheet" >
+    <link href="resources/bootstrap.min.css" rel="stylesheet">
+    <link href="resources/templatestyles.css" rel="stylesheet">
+    <link href="resources/style.css" rel="stylesheet" />
+    <script src="resources/all.min.js" crossorigin="anonymous"></script>
 
     <?php require 'header.php'; ?>
     <style>
@@ -117,7 +118,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     <div class="form-signin text-center">
 
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 fw-normal" style="margin-top:10px;">Admin Login</h1>
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
@@ -129,36 +130,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             <div class="form-floating wrapper">
                 <input type="text" name="username" placeholder="name@example.com" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>"
-                value="<?php if(isset($_COOKIE["username"])) { echo $_COOKIE["username"]; } ?>">
+                value="<?php if(isset($_COOKIE["adminusername"])) { echo $_COOKIE["adminusername"]; } ?>">
                 <label for="username">Username</label>
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                <span class="invalid-feedback text-left"><?php echo $username_err; ?></span>
             </div>
 
             <div class="form-floating wrapper">
                 <input type="password" name="password" placeholder="Password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>"
-                value="<?php if(isset($_COOKIE["password"])) { echo $_COOKIE["password"]; } ?>">
+                value="<?php if(isset($_COOKIE["adminpassword"])) { echo $_COOKIE["adminpassword"]; } ?>">
                 <label for="password">Password</label>
-                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                <span class="invalid-feedback text-left"><?php echo $password_err; ?></span>
             </div>
 
-            <div class="form-check wrapper">
+            <div class="form-check" style="margin-left: -120px">
                 <input class="form-check-input" type="checkbox" name="remember" value="remember">
-                <label class="form-check-label" for="remember" style="margin-left: -120px;"> Remember me </label>
+                <label class="form-check-label" for="remember"> Remember me </label>
             </div>
 
             <div class="wrapper" style="margin-top:30px">
                 <input class="w-100 btn btn-lg btn-primary" type="submit" value="Sign in" />
             </div>
-            <p>Forgot Password? <a href="forgotpassword.php">Click here</a></p>
-            <p>Don't have an account? <a href="signup.php">Sign up now</a></p>
+            <p style="margin-bottom:-40px;">Forgot Password? <a href="forgotpassword.php">Click here</a></p>
         </form>
     </div>
 
     <?php require 'footer.php'; ?>
 
-    <script src="../resources/jquery-3.6.0.min.js"></script>
+    <script src="resources/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="../resources/bootstrap.min.js"></script>
+    <script src="resources/bootstrap.min.js"></script>
 
     </body>
 </html>

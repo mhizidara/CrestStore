@@ -1,6 +1,6 @@
 <?php
 // Include config file
-require_once "../resources/config.php";
+require_once "resources/config.php";
 
 // Define variables and initialize with empty values
 $fullname = $username = $emailaddress = $password = $confirm_password = "";
@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $fullname_err = "Your legal name is required.";     
     } 
     elseif(!preg_match("/^([a-zA-Z' ]+)$/",$fullname)){
-        echo 'Valid name given.';
+        echo 'Invalid name given.';
     }
     else{
         // Prepare a select statement
@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $stmt->bind_param('s', $param_fullname);
             
             // Set parameters
-            $param_fullname = trim($_POST["fullname"]);
+            $param_fullname = ucwords(trim($_POST["fullname"]));
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
@@ -35,12 +35,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if($stmt->num_rows == 1){
                     $fullname_err = "This user already exists.";
                 } else{
-                    $fullname = trim($_POST["fullname"]);
+                    $fullname = $param_fullname;
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
@@ -60,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $stmt->bind_param('s', $param_username);
             
             // Set parameters
-            $param_username = trim($_POST["username"]);
+            $param_username = ucwords(trim($_POST["username"]));
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
@@ -70,12 +69,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 if($stmt->num_rows == 1){
                     $username_err = "This username is already taken.";
                 } else{
-                    $username = trim($_POST["username"]);
+                    $username = $param_username;
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
@@ -108,7 +106,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Check input errors before inserting in database
-    if(empty($username_err) && empty($emailaddress_err) && empty($password_err) && empty($confirm_password_err)){
+    if(empty($fullname_err) && empty($username_err) && empty($emailaddress_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
         $sql = "INSERT INTO users (fullname, username, email, password) VALUES (?, ?, ?, ?)";
@@ -126,16 +124,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             // Attempt to execute the prepared statement
             if($stmt->execute()){
                 // Redirect to login page
-                header("location: signin.php");
+                header("location: index.php");
             } else{
-                $signup_err = "Oops! Something went wrong. Please try again later.";
+                $signup_err = "Something went wrong. Please try again later.";
             }
-
             // Close statement
             $stmt->close();
         }
     }
-    
     // Close connection
     $mysqli->close();
 }
@@ -149,9 +145,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sign Up</title>
         
-        <link href="../resources/bootstrap4.5.2.min.css" rel="stylesheet" >
-        <link href="../resources/bootstrap.min.css" rel="stylesheet" >
-        <link href="../resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/bootstrap4.5.2.min.css" rel="stylesheet" >
+        <link href="resources/bootstrap.min.css" rel="stylesheet" >
+        <link href="resources/templatestyles.css" rel="stylesheet">
+        <link href="resources/style.css" rel="stylesheet" />
+        <script src="resources/all.min.js" crossorigin="anonymous"></script>
 
         <?php require 'header.php'; ?>
     </head>
@@ -166,7 +164,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         echo '<div class="alert alert-danger">' . $signup_err . '</div>';
                     }
                 ?>
-
                     <div class="form-group">
                         <label for="fullname" class="form-label">Name</label>
                         <input type="text" name="fullname" class="form-control <?php echo (!empty($fullname_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $fullname; ?>">
@@ -182,17 +179,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <input type="email" name="emailaddress" class="form-control <?php echo (!empty($emailaddress_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $emailaddress; ?>">
                         <span class="invalid-feedback"><?php echo $emailaddress_err; ?></span>
                     </div>
-                    <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-                        <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+                            <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="confirm_password" class="form-label">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+                            <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
-                        <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-                        <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top:10px;">
                         <input type="submit" class="btn btn-primary" value="Create Account" />
                         <!--<input type="reset" class="btn btn-secondary ml-2" value="Reset"/>-->
                     </div>
@@ -202,9 +201,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <?php require 'footer.php'; ?>
 
-        <script src="../resources/jquery-3.6.0.min.js"></script>
+        <script src="resources/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="../resources/bootstrap.min.js"></script>
+        <script src="resources/bootstrap.min.js"></script>
         
     </body>
 </html>
